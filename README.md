@@ -1,5 +1,5 @@
 
-# Algorithms and Data Structures A
+# Algorithms and Data Structures
 
 ![CI](https://github.com/arcuri82/algorithms/workflows/CI/badge.svg)
 
