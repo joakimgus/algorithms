@@ -13,65 +13,80 @@ public class MyRingArrayQueue<T> implements MyQueue<T> {
 
     @Override
     public void enqueue(T value) {
-        if(isEmpty()){
+        if(isEmpty()) {
             head = 0;
             tail = 0;
-        } else if(tail < data.length - 1){
-            //there is space
-            tail++;
-        } else {
-            /*
-                we run out of space, where "tail"
-                points to the last element in the array.
-                What to do?
-                Here we consider 2 options, based on the
-                position of "head".
-             */
-            if(size() < data.length / 5){
-                /*
-                    not so many elements in the array, so
-                    just shift them to the left, in a way
-                    to align the "head" at the beginning of
-                    the array.
-
-                    Note: the choice of "5" is arbitrary...
-                 */
-                int  size = size();
-                for(int i=0; i<size; i++){
-                    data[i] = data[i + head];
-                }
-                head = 0;
-                tail = size;
+        }else if(size() < data.length){
+            if(tail == data.length - 1 && head != 0){
+                tail = 0;
             } else {
-                //too many elements... let's just create a new array with double size
-                Object[] tmp = new Object[data.length * 2];
-
-                int  size = size();
-                for(int i=0; i<size; i++){
-                    tmp[i] = data[i + head];
-                }
-                head = 0;
-                tail = size;
-                data = tmp;
+                tail++;
             }
+        } else {
+            Object[] tmp = new Object[data.length * 2];
+
+            int k = data.length - head;
+            for(int i=0; i<k; i++){
+                tmp[i] = data[head + i];
+            }
+
+            for(int i=0; i< (tail+1); i++){
+                tmp[k + i] = data[i];
+            }
+
+            head = 0;
+            tail = data.length;
+            data = tmp;
         }
 
         data[tail] = value;
-
     }
 
     @Override
     public T dequeue() {
-        return null;
+        if (isEmpty()) {
+            throw new RuntimeException("the queue is empty, cant remove nothing.");
+        }
+
+        T value = (T) data[head];
+
+        if(head == tail){
+            head = -1;
+            tail = -1;
+        } else if(head == data.length -1){
+            head = 0;
+        } else {
+            head++;
+        }
+
+        return value;
     }
 
     @Override
     public T peek() {
-        return null;
+        if(isEmpty()){
+            throw new RuntimeException();
+        }
+
+        return (T) data[head];
     }
 
     @Override
     public int size() {
-        return 0;
+
+        if(head < 0) {
+            return 0;
+        } else if(head == tail) {
+            return 1;
+        } else if(head < tail) {
+            return tail - head + 1;
+        } else {
+            int size = 0;
+
+            size += (data.length - head);
+            size += tail + 1;
+
+            return size;
+        }
     }
 }
