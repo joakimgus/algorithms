@@ -153,14 +153,14 @@ public class MyMapBinarySearchTree<K extends Comparable<K>, V> implements MyMapT
         return subtreeRoot;
     }
 
-    private TreeNode min(TreeNode subtreeRoot) {
+    protected TreeNode min(TreeNode subtreeRoot) {
         if (subtreeRoot.left == null) {
             return subtreeRoot;
         }
         return min(subtreeRoot.left);
     }
 
-    private TreeNode deleteMin(TreeNode subtreeRoot) {
+    protected TreeNode deleteMin(TreeNode subtreeRoot) {
 
         if (subtreeRoot.left == null) {
             return subtreeRoot.right;
