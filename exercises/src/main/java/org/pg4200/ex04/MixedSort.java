@@ -4,6 +4,12 @@ import org.pg4200.les03.sort.MySort;
 
 public class MixedSort implements MySort {
 
+    private final int bubbleLimit;
+
+    public MixedSort(int bubbleLimit) {
+        this.bubbleLimit = bubbleLimit;
+    }
+
     @Override
     public <T extends Comparable<T>> void sort(T[] array) {
         if (array == null) {
@@ -17,17 +23,21 @@ public class MixedSort implements MySort {
 
     private <T extends Comparable<T>> void mergesort(int low, int high, T[] array, T[] buffer) {
 
-        if (low >= high) {
+        if(high - low < bubbleLimit){
+            bubbleSort(low, high, array);
             return;
         }
 
-        int middle = low + (high - low) / 2;
+        if (low < high) {
 
-        mergesort(low, middle, array, buffer);
+            int middle = low + (high - low) / 2;
 
-        mergesort(middle + 1, high, array, buffer);
+            mergesort(low, middle, array, buffer);
 
-        merge(low, middle, high, array, buffer);
+            mergesort(middle + 1, high, array, buffer);
+
+            merge(low, middle, high, array, buffer);
+        }
     }
 
     private <T extends Comparable<T>> void merge(int low, int middle, int high, T[] array, T[] buffer) {
@@ -49,6 +59,32 @@ public class MixedSort implements MySort {
                 array[k] = buffer[j++];
             } else {
                 array[k] = buffer[i++];
+            }
+        }
+    }
+
+    private <T extends Comparable<T>> void bubbleSort(int low, int high, T[] array) {
+
+        boolean swapped = true;
+        int lastSwap = high;
+
+        while (swapped) {
+
+            swapped = false;
+            int limit = lastSwap;
+
+            for (int i = low; i < limit; i++) {
+                int j = i + 1;
+
+
+                if (array[i].compareTo(array[j]) > 0) {
+                    T tmp = array[i];
+                    array[i] = array[j];
+                    array[j] = tmp;
+
+                    swapped = true;
+                    lastSwap = i;
+                }
             }
         }
     }

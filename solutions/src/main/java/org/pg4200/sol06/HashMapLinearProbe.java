@@ -91,6 +91,8 @@ public class HashMapLinearProbe<K, V> implements MyHashMap<K, V> {
         int i = index(key);
 
         int position = findKey(i, key);
+
+
         if(position < 0){
             position = findEmpty(i);
         }

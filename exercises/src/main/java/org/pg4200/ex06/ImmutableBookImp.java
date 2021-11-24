@@ -1,40 +1,59 @@
 package org.pg4200.ex06;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ImmutableBookImp implements ImmutableBook{
+    private final String title;
+
+    private final int year;
+
+    private final List<ImmutableAuthor> authors;
+
+    public ImmutableBookImp() {
+        this(null, -1, null);
+    }
+
+    public ImmutableBookImp(String title, int year, List<ImmutableAuthor> authors) {
+        this.title = title;
+        this.year = year;
+        this.authors = authors == null ? null : Collections.unmodifiableList(authors);
+    }
+
     @Override
     public ImmutableBook withTitle(String title) {
-        return null;
+        return new ImmutableBookImp(title, this.year, this.authors);
     }
 
     @Override
     public ImmutableBook withYear(int year) {
-        return null;
+        return new ImmutableBookImp(this.title, year, this.authors);
     }
 
     @Override
     public ImmutableBook withAuthors(List<ImmutableAuthor> authors) {
-        return null;
+        return new ImmutableBookImp(this.title, this.year, authors);
     }
 
     @Override
     public ImmutableBook withAuthors(ImmutableAuthor... authors) {
-        return null;
+        return withAuthors(Arrays.asList(authors));
     }
+
 
     @Override
     public String getTitle() {
-        return null;
+        return title;
     }
 
     @Override
     public int getYear() {
-        return 0;
+        return year;
     }
 
     @Override
     public List<ImmutableAuthor> getAuthors() {
-        return null;
+        return authors;
     }
 }
